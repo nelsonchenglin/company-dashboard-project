@@ -14,6 +14,8 @@ const apiUrl = 'api/';
 })
 export class APIService {
   constructor(private http: HttpClient) {}
+  private memberId: number = 0;
+  private memberName: string = '';
 
   getAnnouncements(companyID: number): Observable<Announcement[]> {
     return this.http.get<Announcement[]>(
@@ -36,7 +38,11 @@ export class APIService {
 
   toggleActiveUser(userID: number, companyID: number, adminID: number) {
     const adminHeaders = new HttpHeaders().set('admin-id', adminID.toString());
-    return this.http.patch<User>(`${apiUrl}company/${companyID}/user/${userID}`, '', { headers: adminHeaders });
+    return this.http.patch<User>(
+      `${apiUrl}company/${companyID}/user/${userID}`,
+      '',
+      { headers: adminHeaders }
+    );
   }
 
   getProjects(companyID: number, teamID: number): Observable<Project[]> {
@@ -101,7 +107,9 @@ export class APIService {
 
   createTeam(teamDto: any, adminID: number, companyID: number) {
     const header = new HttpHeaders().set('admin-id', adminID.toString());
-    return this.http.post(`${apiUrl}team/${companyID}/company`, teamDto, { headers: header });
+    return this.http.post(`${apiUrl}team/${companyID}/company`, teamDto, {
+      headers: header,
+    });
   }
 
   createNewUser(user: User, adminID: number): Observable<any> {
@@ -110,9 +118,9 @@ export class APIService {
         username: user.username,
         password: user.password,
       },
-      "profile": user.profile,
-      "admin": user.admin
-    }
+      profile: user.profile,
+      admin: user.admin,
+    };
     const header = new HttpHeaders().set('admin-id', adminID.toString());
     console.log('Username: ' + user.username);
     return this.http.post(`${apiUrl}users`, userRequest, { headers: header });
@@ -120,6 +128,29 @@ export class APIService {
 
   addUserToCompany(userID: number, companyID: number, adminID: number) {
     const header = new HttpHeaders().set('admin-id', adminID.toString());
-    return this.http.patch(`${apiUrl}company/${companyID}/users`, [userID], { headers: header });
+    return this.http.patch(`${apiUrl}company/${companyID}/users`, [userID], {
+      headers: header,
+    });
+  }
+
+  getUserProjects(userID: number) {
+    return this.http.get(`${apiUrl}users/${userID}/projects`);
+  }
+
+  findUserById(userID: number) {
+    return this.http.get(`${apiUrl}users/${userID}`);
+  }
+
+  getMemberId() {
+    return this.memberId;
+  }
+
+  getMemberName() {
+    return this.memberName;
+  }
+
+  setMemberId(memberId: number, memberName: string) {
+    this.memberId = memberId;
+    this.memberName = memberName;
   }
 }

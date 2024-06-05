@@ -13,8 +13,13 @@
   <div class="members-div">
     <h4>Members</h4>
     <div *ngFor="let member of team.teammates">
-      <span class="name"
-        >{{ member.profile.firstName }} {{ member.profile.lastName }}</span
+      <span class="name">
+        <button
+          [routerLink]="['/users', member.id, 'projects']"
+          (click)="handleClick(member.id, member.name)"
+        >
+          {{ member.profile.firstName }} {{ member.profile.lastName }}
+        </button></span
       >
     </div>
   </div>

@@ -1,18 +1,14 @@
 package com.cooksys.groupfinal.services.impl;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.cooksys.groupfinal.dtos.*;
+import com.cooksys.groupfinal.entities.*;
+import com.cooksys.groupfinal.mappers.ProjectMapper;
+import com.cooksys.groupfinal.repositories.TeamRepository;
 import org.springframework.stereotype.Service;
 
-import com.cooksys.groupfinal.dtos.BasicUserDto;
-import com.cooksys.groupfinal.dtos.CredentialsDto;
-import com.cooksys.groupfinal.dtos.FullUserDto;
-import com.cooksys.groupfinal.dtos.UserRequestDto;
-import com.cooksys.groupfinal.entities.Credentials;
-import com.cooksys.groupfinal.entities.Profile;
-import com.cooksys.groupfinal.entities.User;
 import com.cooksys.groupfinal.exceptions.BadRequestException;
 import com.cooksys.groupfinal.exceptions.NotAuthorizedException;
 import com.cooksys.groupfinal.exceptions.NotFoundException;
@@ -32,6 +28,8 @@ public class UserServiceImpl implements UserService {
 	private final FullUserMapper fullUserMapper;
 	private final CredentialsMapper credentialsMapper;
 	private final BasicUserMapper basicUserMapper;
+	private final TeamRepository teamRepository;
+	private final ProjectMapper projectMapper;
 
 	private User findUser(String username) {
 		Optional<User> user = userRepository.findByCredentialsUsernameAndActiveTrue(username);
@@ -101,6 +99,34 @@ public class UserServiceImpl implements UserService {
 		userRepository.saveAndFlush(newUser);
 
 		return fullUserMapper.entityToFullUserDto(newUser);
+	}
+
+	public Set<ProjectDto> getProjectsByUserId(Long userId){
+		Optional<User> optionalUser = userRepository.findById(userId);
+
+		if (optionalUser.isEmpty()){
+			throw new NotFoundException("User not found");
+		}
+
+		User retrievedUser = optionalUser.get();
+		Set<Project> userProjects =  new HashSet<>();
+		List<Team> userTeams = teamRepository.findByTeammatesContains(retrievedUser);
+
+		for (Team team: userTeams){
+			userProjects.addAll(team.getProjects());
+		}
+		return projectMapper.entitiesToDtos(userProjects);
+	}
+
+	public FullUserDto findUserById(Long userId){
+		Optional<User> optionalUser = userRepository.findById(userId);
+		if (optionalUser.isEmpty()){
+			throw new NotFoundException("User not found");
+		}
+
+		User retrievedUser = optionalUser.get();
+
+		return fullUserMapper.entityToFullUserDto(retrievedUser);
 	}
 
 }

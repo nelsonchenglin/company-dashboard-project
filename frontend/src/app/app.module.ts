@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ProjectCardComponent } from './projects/project-card/project-card.component';
 import { TeamOverlayComponent } from './teams/team-overlay/team-overlay.component';
+import { UserProjectsComponent } from './user-projects/user-projects.component';
 
 
 const routes: Routes = [
@@ -41,7 +42,8 @@ const routes: Routes = [
     UserRowComponent,
     UserOverlayComponent,
     ProjectCardComponent,
-    TeamOverlayComponent
+    TeamOverlayComponent,
+    UserProjectsComponent
   ],
   imports: [
     BrowserModule,

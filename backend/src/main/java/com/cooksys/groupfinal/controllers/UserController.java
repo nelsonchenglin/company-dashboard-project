@@ -1,19 +1,13 @@
 package com.cooksys.groupfinal.controllers;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.cooksys.groupfinal.dtos.*;
+import com.cooksys.groupfinal.entities.Project;
+import org.springframework.web.bind.annotation.*;
 
-import com.cooksys.groupfinal.dtos.BasicUserDto;
-import com.cooksys.groupfinal.dtos.CredentialsDto;
-import com.cooksys.groupfinal.dtos.FullUserDto;
-import com.cooksys.groupfinal.dtos.UserRequestDto;
 import com.cooksys.groupfinal.services.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,6 +33,16 @@ public class UserController {
 	@PostMapping()
 	public FullUserDto createUser(@RequestBody UserRequestDto userRequestDto, @RequestHeader("admin-id") Long adminId) {
 		return userService.createUser(userRequestDto, adminId);
+	}
+
+	@GetMapping("/{userId}/projects")
+	public Set<ProjectDto> getProjectsByUserId (@PathVariable Long userId){
+		return userService.getProjectsByUserId(userId);
+	}
+
+	@GetMapping("/{userId}")
+	public FullUserDto findUserById(@PathVariable Long userId){
+		return userService.findUserById(userId);
 	}
 
 }
