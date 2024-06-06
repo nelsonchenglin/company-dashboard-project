@@ -1,5 +1,7 @@
 <div>
-  <h2>{{ memberName }}'s Projects</h2>
+  <h2>
+    {{ member.profile.firstName }} {{ member.profile.lastName }}'s Projects
+  </h2>
   <div *ngFor="let project of userProjects">
     <h2>Project Name: {{ project.name }}</h2>
     <p>Project Description: {{ project.description }}</p>

@@ -9,21 +9,24 @@ import { User, defaultUser } from 'src/app/user.model';
   styleUrls: ['./user-projects.component.css'],
 })
 export class UserProjectsComponent {
-  userName: string = '';
   userProjects: Project[] = [];
   memberId: number = 0;
-  memberName: string = '';
+  member: User = defaultUser;
 
   constructor(private apiService: APIService) {}
 
   ngOnInit(): void {
-    this.memberName = this.apiService.getMemberName();
-    console.log(this.memberName, this.apiService.getMemberName());
     this.apiService
       .getUserProjects(this.apiService.getMemberId())
       .subscribe((data) => {
         this.userProjects = JSON.parse(JSON.stringify(data));
-        console.log(this.userProjects);
+      });
+
+    this.apiService
+      .findUserById(this.apiService.getMemberId())
+      .subscribe((userData) => {
+        this.member = userData;
+        console.log('member info', this.member);
       });
   }
 }

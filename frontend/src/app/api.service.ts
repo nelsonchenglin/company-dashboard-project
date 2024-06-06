@@ -138,7 +138,7 @@ export class APIService {
   }
 
   findUserById(userID: number) {
-    return this.http.get(`${apiUrl}users/${userID}`);
+    return this.http.get<User>(`${apiUrl}users/${userID}`);
   }
 
   getMemberId() {
