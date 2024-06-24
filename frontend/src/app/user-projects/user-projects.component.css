@@ -1,0 +1,26 @@
+#member-project-main-container {
+  color: white;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.member-project-card {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 5px;
+}
+
+.project-card-container {
+  width: 32%;
+  height: 30vh;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
+.project-details-container {
+  padding: 5px;
+}

@@ -27,6 +27,7 @@ export class UserProjectsComponent {
       .subscribe((userData) => {
         this.member = userData;
         console.log('member info', this.member);
+        console.log(this.userProjects);
       });
   }
 }
